@@ -61,9 +61,12 @@ There is no limit to how much traffic a single instance can handle.
 
 *Authorization Level*
 Unauthorized requests are blocked. The API key can be included in a query string variable named `code`, or it can be included in an `x-functions-key` HTTP header.  
-Function - requires a function-specific key in each request. 
-Admin - Uses a global key  
+Function - requires a function-key or host-key in each request. 
+Admin - Uses a host-key  only
 Anonymous - no key required  
+
+*function key* - Specific  to a function  
+*host key* - Apply to all functions inside a function app
 
 
 Q: The container that groups functions into a logical unit for easier management, deployment, and sharing of resources is called?
@@ -74,4 +77,19 @@ A function app is a way to organize and collectively manage your functions. A fu
 
 ```curl --header "Content-Type: application/json" --header "x-functions-key: <your-function-key>" --request POST --data "{\"name\": \"Azure Function\"}" https://<your-url-here>/api/<function-name> ```
 
+Q: How is the schedule configured for Timer Triggers?
+A: Using a cron-formatted schedule parameter
 
+Q: How to change the name of the variable that contains information about an incoming http request for an http trigger?
+A: Set the *Request Parameter Name*. the default is `req`
+
+
+Blob trigger - executes a function when a file is uploaded or updated in blob storage  
+
+Q: Which setting controls which file in blob storage should trigger a function?
+A: `path` setting
+
+Blob trigger path:  
+my_blob_name/{foo}.jpg
+
+Two parts: blob name and the file to watch for within the blob. words between brackets will become variable names which are passed to the function.
