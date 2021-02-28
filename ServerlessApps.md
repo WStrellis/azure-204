@@ -57,7 +57,15 @@ Two plans available:
 When scaling only one functon app instance can be created every 10 seconds, up to a max of 200 instances. 
 There is no limit to how much traffic a single instance can handle.
 
-*Bindings* are the input(reads from/triggers) and output( writes to) of a AF. 
+*Bindings* are the input(reads from/triggers) and output( writes to) of a AF.  
+`Input` bindings can be a connection to a datasource which provides input to a function or a trigger which causes the function to run.  
+
+*Required Properties for Bindings:*
+- Name : defines the parameter name passed to the function
+- Type: type of data or service to interact with
+- Direction : input or output
+- Connection: name of app setting key used for connection string. Only required for some bindings.
+
 
 *Authorization Level*
 Unauthorized requests are blocked. The API key can be included in a query string variable named `code`, or it can be included in an `x-functions-key` HTTP header.  
@@ -67,6 +75,9 @@ Anonymous - no key required
 
 *function key* - Specific  to a function  
 *host key* - Apply to all functions inside a function app
+
+Q: How to set app setting binding expressions?
+A: wrap parameter name in percent symbols
 
 
 Q: The container that groups functions into a logical unit for easier management, deployment, and sharing of resources is called?
@@ -93,3 +104,6 @@ Blob trigger path:
 my_blob_name/{foo}.jpg
 
 Two parts: blob name and the file to watch for within the blob. words between brackets will become variable names which are passed to the function.
+
+Q: When should the `sql query` parameter be used when using Cosmos DB as an input binding?
+A: When you want to get multiple rows of data. Requires additional processing within function. `document parameter name` is better when searching for a single row.
