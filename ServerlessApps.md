@@ -57,6 +57,9 @@ Two plans available:
 When scaling only one functon app instance can be created every 10 seconds, up to a max of 200 instances. 
 There is no limit to how much traffic a single instance can handle.
 
+*Function Apps* are a collection of Azure Functions which are deployed in the same environment and use the same language.  
+*Function Project* - folder which contains all of the code needed for a set of functions when developing in local environment. Same as a `function app` on azure.  
+
 *Bindings* are the input(reads from/triggers) and output( writes to) of a AF.  
 `Input` bindings can be a connection to a datasource which provides input to a function or a trigger which causes the function to run.  
 
@@ -107,3 +110,63 @@ Two parts: blob name and the file to watch for within the blob. words between br
 
 Q: When should the `sql query` parameter be used when using Cosmos DB as an input binding?
 A: When you want to get multiple rows of data. Requires additional processing within function. `document parameter name` is better when searching for a single row.
+
+Q: What is the difference between Azure Functions and Durable Functions?
+A: AFs are stateless. Data is lost after function returns. DFs are stateful. Data can be retained between function calls.
+
+*Durable Functions*
+Three types:  
+- Client : entry point to a DF orchestration. Run in response to a trigger. Can be written in any supported AF language.
+- Orchestrator : describe how actions are executed and the order in which they run. C# and JS only.
+- Activity : The work/action the function performs when triggered.
+
+Always use the `currentUTCDateTime` property of `durable-functions` package to read the time of the request.  
+
+Use `createTimer()` instead of `setInverval` or `setTimer` in Orchestrators.
+
+```
+const df = require("durable-functions");
+const moment = require("moment");
+
+module.exports = df.orchestrator(function* (context) {
+    const outputs = [];
+    // add 20 seconds to the time of the request
+    const deadline = moment.utc(context.df.currentUtcDateTime).add(20, "s");
+    const activityTask = context.df.waitForExternalEvent("Approval");
+    const timeoutTask = context.df.createTimer(deadline.toDate());
+
+    // use the result of whichever function returns first 
+    const winner = yield context.df.Task.any([activityTask, timeoutTask]);
+    if (winner === activityTask) {
+        outputs.push(yield context.df.callActivity("Approval", "Approved"));
+    }
+    else
+    {
+        outputs.push(yield context.df.callActivity("Escalation", "Head of department"));
+    }
+
+    if (!timeoutTask.isCompleted) {
+        // All pending timers must be complete or canceled before the function exits.
+        timeoutTask.cancel();
+    }
+
+    return outputs;
+});
+```
+
+### Core Tools CLI
+
+Start a new Functions project
+```
+func init
+```
+
+Add a function to the project
+```
+func add
+```
+
+Run the functions locally
+```
+funct start
+```
