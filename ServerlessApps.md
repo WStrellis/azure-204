@@ -154,6 +154,13 @@ module.exports = df.orchestrator(function* (context) {
 });
 ```
 
+*SignalR*
+SignalR is a websocket service. It manages connections to clients for you.
+```
+For clients that support HTML 5, the WebSockets API transport is used by default. If the client doesn't support WebSockets, then SignalR falls back to Server Sent Events (also known as EventSource). For older clients, Ajax long polling or Forever Frame (IE only) is used to mimic a two-way connection.
+```
+- The function used to communicate with SignalR service on client side should be named "negotiate" to follow convention
+
 ### Core Tools CLI
 
 Start a new Functions project
@@ -170,3 +177,13 @@ Run the functions locally
 ```
 funct start
 ```
+
+*API Management*  
+
+Used to combine multiple microservices into one API service.
+
+- Each microservice or API can be developed, tested, and deployed independently
+- handles authorization and authentication
+- rate limit and quota enforcement
+- response and request transformation
+- logging and tracing

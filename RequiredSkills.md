@@ -14,3 +14,5 @@
     + Action func
 
 - use Azure Core cli tools to create and deploy a project
+
+- create multiple apis and combine them with API Management Service
