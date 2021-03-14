@@ -84,3 +84,14 @@ Update `local.settings.json` with connection strings.
   }
 }
 ```
+
+### Service Bus
+Get connection string and access key
+```
+az servicebus namespace authorization-rule keys list \
+    --resource-group <resource-group-name> \
+    --name RootManageSharedAccessKey \
+    --query primaryConnectionString \
+    --output tsv \
+    --namespace-name <namespace-name>
+```

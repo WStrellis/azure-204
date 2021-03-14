@@ -19,15 +19,45 @@ Four services for managing communication  between services:
 - supports queue size greater than 80gb
 - stores messages sent from Providers until a Subscriber reads them
 
+## Service Bus
+
+*namespace* - a container with a FQDN that with the queues, topics, and relays for a Service Bus instance.
+
+Each namespace has encryrtion keys. Sending and Receiving components must provide these keys when connecting.
+
+
 ### Service Bus Queues
 - supports transactions, At-Most-Once delivery, batching messages, FIFO guarantee, RBAC
+- pricing based on queue size. Charged for each message added or removed from queue.
+- messages are limited to 64kb. To use larger amounts of data, first store the message as a Blob, and send the URL to the data in the message. 
+- When a receiver reads a message from the queue the message is becomes invisible to other receivers for 30 seconds. If the receiver sucessfully processes the message it will delete the message from the queue. If the receiver fails to process the message and delete it, the message will become visible again to other receivers.
+
+Information required to access a queue:
+- storage account name
+- queue name
+- auth token
+
+*Queue Access*
+Azure AD - RBAC using Azure AD  
+Shared Key - An encrypted signature associated with a storage account.  Grants full access to storage account.  
+Shared Access Signature( SAS ) - a generated URI. Configurable for specific permissions.
 
 ### Service Bus Topics
 - suports "Topics", allowing multiple Receivers to handle each message
 
-*Topics*
-Allows multiple Subscribers to be triggered by a single message.
+*Queues*  
+A temporary storage object that acts as an intermediary between one Send and and one Receiver. 
 
+*Topics*  
+Similar to a Queue but each message in the Topic can be sent to multiple Receivers.
+
+*Relay*  
+Used to simulate a direct communication between the Sender and Reciever as if they were on the same network segment but separated by a firewall.
+
+*Subscription Filter Types*  
+Boolean - `TrueFilter` all messages sent to topic are delivered to subscribers. `FalseFilter` no messages sent to topic are delivered.  
+SQL - Uses a filter condition written in SQL syntax to evaluate incoming messages to a topic. Only messages that evaluate to True are delivered. Highest processing time.  
+Correlation - List of k:v conditions. If the properties and values match the message is delivered.
 
 
 
