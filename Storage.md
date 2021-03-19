@@ -17,7 +17,10 @@ Triggers an alert when an anomaly occurs. Sends alerts via email.
 Azure Data Lake Storage Gen 2 supports ACLs and OAuth2 bearer tokens.
 
 ## Azure Blob Storage
-Azure Blog storage is used to store large amounts of unstructured data.
+Azure Blog storage is used to store large amounts of unstructured data.  
+
+Default permissions require authentication to access a blob.  Individual containers can be configured to allow public access to all of the blob data within them.  
+
 Good things for blob storage:  
 - storing/serving files
 - streaming video/audio
@@ -25,8 +28,8 @@ Good things for blob storage:
 
 Three types of blobs:  
 Block: used for storing text or binary data. Each block is read from beginning to end.  
-Append: Designed for fast append operations, such as logging.   
-Page: data is stored in pages. used for frequent reads and writes. Can read/write any part of page.  
+Append: Designed for fast append operations, such as logging. No update/delete capability.   
+Page: data is stored in pages. used for frequent reads and writes. Random-access, can read/write any part of page. Used for Azure VM virtual HDs.  
 
 ## Authorization
 Access Keys - Allow full access to a storage account  

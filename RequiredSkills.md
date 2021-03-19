@@ -16,3 +16,10 @@
 - use Azure Core cli tools to create and deploy a project
 
 - create multiple apis and combine them with API Management Service
+
+### Message and Event Services
+- Make app with Service Bus Queues
+- Make app with Event Hub/Grid
+
+### Data Storage
+- make web app which allows users to upload files to blob storage and anyone can download them.
