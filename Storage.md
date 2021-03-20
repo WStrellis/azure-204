@@ -7,6 +7,8 @@ Four types of data:
 
 A single Azure subscription can host up to 200 storage accounts, each of which can hold 500 TB of data.  
 
+A single storage account has a fixed I/O limit of 20,000 operations per sec. This can support but to 40 standard VHDs.  
+
 Data is automatically encrypted using a 256-bit AES cipher before being stored, and decrypted when read.  
 
 Virtual Hard Disks(VHD) can be encrypted. Bitlocker for Windows, dm-crypt for Linux.  
