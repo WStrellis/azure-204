@@ -14,8 +14,8 @@ Billing is based on CPU compute time and storage capacity.
 
 VMs should have two VHDs by default. One for the OS and one as temporary storage. Data on the temp  storage disk will be lost if the VM is rebooted so store application data on a third VHD.  
 
-OS Disk : `/dev/sda` maximum capacity of 2048gb   
-Temporary Storage: `/dev/sdb` mounted at `/mnt`. Stores the swap file.  
+OS Disk : `/dev/sda` for linux, `C:/` for windows, maximum capacity of 2048gb   
+Temporary Storage: `/dev/sdb` mounted at `/mnt` for linux, `D:/` for windows. Stores the swap file.  
 Each additional disk can store up to 32 gibibytes of data.  
 
 Extra disks must be formatted and mounted to the vm on the first startup.  
@@ -39,7 +39,12 @@ Install the public ssh key onto an azure VM:
 *Scaling Disks*  
 A single storage account supports up to 40 vhd. More storage accounts must be created if the limit is reached.  
 Unmanaged -  manual scaling.  
-Managed -automatically creates new storage accounts as needed.  
+Managed 
+- automatically creates new storage accounts as needed.  
+- VHDs are spread across Azure infrastructure for higher reliability
+- supports RBAC 
+- Snapshot support
+- Backup support. Can be automatically backed up to a different region.
 
 *Network Security Groups*  
 Software-based firewalls used within Azure virtual networks.  
@@ -59,7 +64,6 @@ VMs deployed within an availablity set of at least two machines are guaranteed 9
 Fault Domain - logical group of components that share a single point of failure, such as a server rack in a AZ datacenter  
 Update Domain - logical group of hardware that is updated/ rebooted simultaneously  
 
-BUBB4burg3rBowser
 
 ### Azure Automation Services
 - Process Automation
@@ -72,3 +76,5 @@ BUBB4burg3rBowser
 
 ### Azure Site Recover
 Deploys VMs to secondary site if primary deployment site fails
+
+
