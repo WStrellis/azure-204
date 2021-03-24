@@ -23,3 +23,7 @@
 
 ### Data Storage
 - make web app which allows users to upload files to blob storage and anyone can download them.
+
+### Resource Management
+- Configure policies on a resource group
+- Configure RBAC on a resource group
