@@ -27,3 +27,9 @@
 ### Resource Management
 - Configure policies on a resource group
 - Configure RBAC on a resource group
+
+### App Service
+- Deploy a web app from git
+- Deploy web app from Docker
+- Use Deployment Slots with git
+- Use Deployment Slots with Docker Containers

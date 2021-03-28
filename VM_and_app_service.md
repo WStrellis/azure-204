@@ -64,6 +64,9 @@ VMs deployed within an availablity set of at least two machines are guaranteed 9
 Fault Domain - logical group of components that share a single point of failure, such as a server rack in a AZ datacenter  
 Update Domain - logical group of hardware that is updated/ rebooted simultaneously  
 
+Scale Up/Down - increasing/decreasing the CPU/RAM size of the VM(s)  
+Scale Out/In - increase/decrease the number of VMs  
+
 
 ### Azure Automation Services
 - Process Automation
@@ -78,3 +81,63 @@ Update Domain - logical group of hardware that is updated/ rebooted simultaneous
 Deploys VMs to secondary site if primary deployment site fails
 
 
+# App Service   
+Billing is based on the resources used by each Web App ( CPU, RAM) and bandwidth consumed.  
+
+App Service Plan Settings
+- OS
+- CPU/RAM
+- SLA
+- Automatic backup/restore
+
+*Services will be interrupted when scaling Up/Down*  
+
+### Deployment Slots
+Each instance of the web app has a different hostnames. When  slots are swapped the hostnames are switched and traffic to the instances is immediately changed. Settings for the slot( database connection strings, etc) are also swapped.  
+
+All of the slots in an App Service plan shares the CPU and RAM of that service plan.  
+
+Using a staging environment to compile a web app can reduce "cold start" delays before deploying to production. App Service will also make a request to the root of the app when a swap is performed.  
+
+Slot settings can be copied from other slots but application code must be deployed from git or docker.  
+
+When apps slots are swapped the settings of the target slot are applied to the source swap before hostnames are changed.  
+
+*Slot Swapping Preview*  
+Slot-Swapping Preview can be used to check if everything works correctly before swapping hostnames.
+
+Phase 1  
+Settings from target slot are applied to source. Swap operation pauses so source slot can be tested with target slot settings.  
+Phase 2  
+Host names are swapped.
+
+
+*Auto Swap*  
+Automatically swap slots for CI/CD. Not available in App Service on Linux  
+
+
+
+
+### Deploy a web app to App Service with Azure CLI  
+Get resource names  
+```
+APPNAME=$(az webapp list --query [0].name --output tsv)
+APPRG=$(az webapp list --query [0].resourceGroup --output tsv)
+APPPLAN=$(az appservice plan list --query [0].name --output tsv)
+APPSKU=$(az appservice plan list --query [0].sku.name --output tsv)
+APPLOCATION=$(az appservice plan list --query [0].location --output tsv)
+```
+
+Deploy:  
+```
+az webapp up --name $APPNAME --resource-group $APPRG --plan $APPPLAN --sku $APPSKU --location "$APPLOCATION"
+```
+
+# Azure Container Registry
+Used to store Docker images on Azure
+
+Advantages over DockerHub:
+- full control over who can see and use images
+- images can be digitally signed to avoid corruption or infection
+- all images are encrypted at rest
+- choice of data center
