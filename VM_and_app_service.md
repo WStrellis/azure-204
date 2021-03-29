@@ -67,6 +67,8 @@ Update Domain - logical group of hardware that is updated/ rebooted simultaneous
 Scale Up/Down - increasing/decreasing the CPU/RAM size of the VM(s)  
 Scale Out/In - increase/decrease the number of VMs  
 
+### Dedicated Hosts
+Physical Servers can be purchased from Microsoft. This give customers full control over the server. No other customers will be able to run services on the server. Multiple private servers are called a `host group`.
 
 ### Azure Automation Services
 - Process Automation
