@@ -33,3 +33,9 @@
 - Deploy web app from Docker
 - Use Deployment Slots with git
 - Use Deployment Slots with Docker Containers
+
+### Security
+- Store secrets in Key Vault
+- Encrypt vm hd with AZ Disk Encryption
+- Encrypt DB tables
+- Add security classifications to db columns
