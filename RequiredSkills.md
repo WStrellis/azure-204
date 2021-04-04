@@ -39,3 +39,18 @@
 - Encrypt vm hd with AZ Disk Encryption
 - Encrypt DB tables
 - Add security classifications to db columns
+- Set DB Server-level firewall rules
+- Set DB database-level firewall rules
+- enable Azure Defender for a SQL db
+- enable auditing for a sql db
+
+set a db level rule
+```
+EXECUTE sp_set_database_firewall_rule N'My Firewall Rule', <start address>, <end address>
+GO
+```
+delete a db level rule
+```
+EXECUTE sp_delete_database_firewall_rule N'my firewall rule';
+GO
+```

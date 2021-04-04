@@ -59,3 +59,26 @@ AZ Blob Storage supports assigning Data Retention Policies and Legal Holds to da
 
 # Regions
 An Azure Region is a distinct set of data centers. Regions are assigned a partner region that is geographically close by to  form "Region Pairs". Data and services should be deployed to paired regions to minimize recovery time. If both regions are down Microsoft selects one as the "priority" region and fixes that one first. If data is not backed up to both regions in a pair it could be placed into a region that is not the priority in the event of an outage. 
+
+# RBAC
+
+Access is granted to users, groups , and applications at a scope level.  
+Inheritance order: Management Group -> Subscription -> Resource Group -> Resource  
+
+RBAC Components:  
+*Security Principal*  
+the user, group, or application that will be granted access  
+
+*Role Definition*  
+A set of rules defining the permissions of a Role  
+Built-In Roles:  
+- Owner - Has full access to all resources, including the right to delegate access to others.
+- Contributor - Can create and manage all types of Azure resources, but can’t grant access to others.
+- Reader - Can view existing Azure resources.
+- User Access Administrator - Lets you manage user access to Azure resources.
+
+*Scope*  
+Where the access applies to. Access granted at Parent scope( ex: resource group) applies to Child scope( ex: vm)  
+
+Permissions can be set using a combination of Actions and Not-Actions. `actions` are what the role grants permission to do. `not-actions` are things the role does not allow. Set to `actions: *` and then use not-actions do remove things the role should not have.
+

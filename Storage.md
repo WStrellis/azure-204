@@ -18,6 +18,36 @@ Triggers an alert when an anomaly occurs. Sends alerts via email.
 
 Azure Data Lake Storage Gen 2 supports ACLs and OAuth2 bearer tokens.
 
+## DB Security
+AZ SQL Database has built-in firewall protections.
+- Default settings block all public access
+- uses TLS for all connections
+- Data at rest with Transparent Data Encryption(TDE). Data is decrypted when read into memory and encrypted when written to disk. db data, log files, and backups are encrypted.
+- Supports Data Masking. the data of some columns can be substituted with asterisks or other strings depending on the user accessing the data. DB admins can always see unmasked data.
+- Supports auditing. Off by default.
+
+the  firewall  can be configured with Server-level rules and Database-level rules  
+Server-Level  
+- filter by azure services
+- filter by ip address
+- filter by vnet
+Database Level
+- filter by ip
+
+Auditing  can be configured at the Server or DB level. DB level should only be used if the auditing configuration of one db on a server is different from the other dbs.  
+
+### Advanced Data Security for  SQL DB
+- data discovery and classification
+- vulnerability assessment
+- advanced threat protection - automated ML threat hunting
+
+### DB Security Best Practices:
+- put services that access a db into a vnet. use Server-level db firewall rules to grant access to the vnet.
+- Create users on the db for each application that will access the db. Only grant access the tables the application needs.
+
+
+
+
 ## Azure Blob Storage
 Azure Blog storage is used to store large amounts of unstructured data.  
 
