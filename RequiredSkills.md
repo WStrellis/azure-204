@@ -28,6 +28,10 @@
 - Configure policies on a resource group
 - Configure RBAC on a resource group
 
+### VM
+- create linux vm and ssh to it
+- create windows vm and rdp to it
+
 ### App Service
 - Deploy a web app from git
 - Deploy web app from Docker

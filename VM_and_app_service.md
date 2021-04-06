@@ -8,6 +8,8 @@ Services Required to Create a VM in Azure:
 - VHD
 - virtual network
 - network interface to connect to vnet
+    - public ip
+    - private ip
 - public id (optional)
 
 Billing is based on CPU compute time and storage capacity.  
@@ -67,6 +69,10 @@ Update Domain - logical group of hardware that is updated/ rebooted simultaneous
 Scale Up/Down - increasing/decreasing the CPU/RAM size of the VM(s)  
 Scale Out/In - increase/decrease the number of VMs  
 
+### Connecting
+If you select "Create New SSH Pair" when creating a new vm you can download the .pem private key.  
+- set permissions to `400`
+- connect to vm with: ` ssh -i my_key.pem  azureuser@xxx.xxx.xxx.xxx`
 
 ### Dedicated Hosts
 Physical Servers can be purchased from Microsoft. This give customers full control over the server. No other customers will be able to run services on the server. Multiple private servers are called a `host group`.
