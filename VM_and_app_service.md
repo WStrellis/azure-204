@@ -74,6 +74,13 @@ If you select "Create New SSH Pair" when creating a new vm you can download the 
 - set permissions to `400`
 - connect to vm with: ` ssh -i my_key.pem  azureuser@xxx.xxx.xxx.xxx`
 
+### AZ Backup Service
+Can be used to create automatic, scheduled backups of vm disks. Installs an extension on the vm which takes snapshots of the attached disk(s).  
+Three types of snapshots:  
+- Application - captures memory content and pending I/O operations
+- File System - snapshot of file system
+- Crash - created when vm crashes
+
 ### Dedicated Hosts
 Physical Servers can be purchased from Microsoft. This give customers full control over the server. No other customers will be able to run services on the server. Multiple private servers are called a `host group`.
 
@@ -91,13 +98,14 @@ Deploys VMs to secondary site if primary deployment site fails
 
 
 # App Service   
-Billing is based on the resources used by each Web App ( CPU, RAM) and bandwidth consumed.  
+Deploys web applications onto vms which are managed by the service. Different plans are offered. Each one has a pre-defined vm. Billing is based on the selected plan, resources used by each Web App ( CPU, RAM), and bandwidth consumed. The advantage of using this service over VM service is that you don't have to configure or manage the vms.  
 
-App Service Plan Settings
+The plan settings define the vm:
 - OS
 - CPU/RAM
 - SLA
 - Automatic backup/restore
+
 
 *Services will be interrupted when scaling Up/Down*  
 
@@ -150,3 +158,30 @@ Advantages over DockerHub:
 - images can be digitally signed to avoid corruption or infection
 - all images are encrypted at rest
 - choice of data center
+
+# Azure Container Instances
+- Deploy isolated containers without managing underlying container manager
+- Persist data using Azure File Shares
+- Container gets public IP and FQDN
+
+# Azure Kubernetes Service
+Kubernetes is a Container Orchestration Platform. Kubernetes is installed on each vm in a group of vms known as a `cluster`. One of the vms is designated as the `main` node. This node is used to manage the other nodes.
+Pods- a logical grouping of containers within a node
+
+Benefits of kubernetes:  
+- load balancing
+- healing - If a pod fails the main node will create a new one
+- rolling deployments - if an image is updated the main node will created new containers from the updated image one container at a time so services are not disrupted.
+- can replicate pods
+
+
+
+# ARM Templates
+- Resources
+    - what will be deployed
+- Variables
+    - values to use in template
+- Parameters
+    - values used in deployment phase
+- Outputs
+    - values returned from deployed resources

@@ -31,12 +31,23 @@
 ### VM
 - create linux vm and ssh to it
 - create windows vm and rdp to it
+- create container registry
+- create container instance from container registry
+- create kubernetes cluster
 
-### App Service
+### App Service and Web Apps
 - Deploy a web app from git
 - Deploy web app from Docker
 - Use Deployment Slots with git
 - Use Deployment Slots with Docker Containers
+- use Web App service to deploy app
+- enable logging
+- configure continuous deployment from github
+    - manual
+    - automatic
+- custom domain name 
+- enable CORS through App Service dashboard and cli
+- configure connection strings
 
 ### Security
 - Store secrets in Key Vault
