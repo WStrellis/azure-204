@@ -57,9 +57,6 @@ AZ Blob Storage supports assigning Data Retention Policies and Legal Holds to da
 - a container can have both a legal hold and data retention policy applied
 - legal hold takes precedence over expired data retention policy
 
-# Regions
-An Azure Region is a distinct set of data centers. Regions are assigned a partner region that is geographically close by to  form "Region Pairs". Data and services should be deployed to paired regions to minimize recovery time. If both regions are down Microsoft selects one as the "priority" region and fixes that one first. If data is not backed up to both regions in a pair it could be placed into a region that is not the priority in the event of an outage. 
-
 # RBAC
 
 Access is granted to users, groups , and applications at a scope level.  

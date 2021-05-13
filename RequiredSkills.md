@@ -9,6 +9,7 @@
 
 - create Durable Functions
     + Client func
+    + Starter func ?
     + Orchestrator func
         - use a schedule to execute an action
     + Action func

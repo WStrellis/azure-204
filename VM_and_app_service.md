@@ -13,6 +13,10 @@ Services Required to Create a VM in Azure:
 - public id (optional)
 
 Billing is based on CPU compute time and storage capacity.  
+*Pay as you Go*  
+pay for compute capacity by the second
+*Reserved Instances*  
+Purchae a vm for 1-3 years in a specific region at a discount.  
 
 VMs should have two VHDs by default. One for the OS and one as temporary storage. Data on the temp  storage disk will be lost if the VM is rebooted so store application data on a third VHD.  
 
@@ -63,8 +67,8 @@ Rules are evaluated from lowest to highest priority.
 *Availability Sets*  
 Groups of identical VMs. Each VM in an availability set is in a different Fault Domain and Update Domain so that if a rack in a data center goes down or undergoes an upgrade any apps running on the VMs will not be interrupted.  
 VMs deployed within an availablity set of at least two machines are guaranteed 99.5%  availability.  
-Fault Domain - logical group of components that share a single point of failure, such as a server rack in a AZ datacenter  
-Update Domain - logical group of hardware that is updated/ rebooted simultaneously  
+*Fault Domain* - logical group of components that share a single point of failure, such as a server rack in a AZ datacenter  
+*Update Domain* - logical group of hardware that is updated/ rebooted simultaneously  
 
 Scale Up/Down - increasing/decreasing the CPU/RAM size of the VM(s)  
 Scale Out/In - increase/decrease the number of VMs  
@@ -95,6 +99,16 @@ Physical Servers can be purchased from Microsoft. This give customers full contr
 
 ### Azure Site Recover
 Deploys VMs to secondary site if primary deployment site fails
+
+### Azure Backup Service
+- automatically allocates and manages backup storage space
+- charged for storage space used, not charged for data transfer
+- Locally redundant
+    - backups are stored in same region
+- geo-redundant
+    - backups are stored in other regions
+- data is encrypted in transit and at rest
+- no time limit
 
 
 # App Service   
