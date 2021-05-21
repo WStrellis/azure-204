@@ -61,7 +61,9 @@ There is no limit to how much traffic a single instance can handle.
 *Function Project* - folder which contains all of the code needed for a set of functions when developing in local environment. Same as a `function app` on azure.  
 
 *Bindings* are the input(reads from/triggers) and output( writes to) of a AF.  
-`Input` bindings can be a connection to a datasource which provides input to a function or a trigger which causes the function to run.  
+- Bindings can be accessed on the `context` object of the function or as parameters. Bindings are passed to the function in the same order they are declared in `function.json`
+- `Input` bindings can be a connection to a datasource which provides input to a function or a trigger which causes the function to run.  
+- `Output` can return data to the caller, send data to another service, or both
 
 *Required Properties for Bindings:*
 - Name : defines the parameter name passed to the function
@@ -70,14 +72,40 @@ There is no limit to how much traffic a single instance can handle.
 - Connection: name of app setting key used for connection string. Only required for some bindings.
 
 
-*Authorization Level*
-Unauthorized requests are blocked. The API key can be included in a query string variable named `code`, or it can be included in an `x-functions-key` HTTP header.  
+-*Authorization Level* - Unauthorized requests are blocked. The API key can be included in a query string variable named `code`, or it can be included in an `x-functions-key` HTTP header.  
 Function - requires a function-key or host-key in each request. 
 Admin - Uses a host-key  only
 Anonymous - no key required  
 
-*function key* - Specific  to a function  
-*host key* - Apply to all functions inside a function app
+- *function key* - Specific  to a function  
+- *host key* - Apply to all functions inside a function app
+- *context* - the first argument passed to every function. It is an object used to send and recieve binding data, write logs, and communicate with the runtime.
+
+
+Functions can be either syncronous or async. If your function is not an async function, you must call context.done() to inform the runtime that your function is complete. The execution times out if it is missing.  
+Example syncronous:  
+```
+module.exports = function (context, req ) {
+    context.res= "Hello, " + req.name
+    context.done()
+}
+```
+Example async:  
+```
+module.exports = async function (context, req, res) {
+    let data = await fetch(...)
+    return {res: data}
+}
+```
+
+To assign a value to the output change the `name` property to `$return` in `function.json`:  
+```
+{
+  "type": "http",
+  "direction": "out",
+  "name": "$return"
+}
+```
 
 Q: How to set app setting binding expressions?
 A: wrap parameter name in percent symbols
@@ -88,6 +116,25 @@ A: Function App
 
 A function app is a way to organize and collectively manage your functions. A function app is comprised of one or more individual functions that are managed together by Azure App Service. All the functions in a function app share the same pricing plan, continuous deployment, and runtime version.:w
 
+- The name of each function's directory is the name of the function app in azure
+- `function.json` contains bindings for each function
+- `host.js` holds configuration data for the vm the functions will run on
+```
+FunctionsProject
+ | - MyFirstFunction
+ | | - index.js
+ | | - function.json
+ | - MySecondFunction
+ | | - index.js
+ | | - function.json
+ | - SharedCode
+ | | - myFirstHelperFunction.js
+ | | - mySecondHelperFunction.js
+ | - node_modules
+ | - host.json
+ | - package.json
+ | - extensions.csproj
+ ```
 
 ```curl --header "Content-Type: application/json" --header "x-functions-key: <your-function-key>" --request POST --data "{\"name\": \"Azure Function\"}" https://<your-url-here>/api/<function-name> ```
 
@@ -97,6 +144,8 @@ A: Using a cron-formatted schedule parameter
 Q: How to change the name of the variable that contains information about an incoming http request for an http trigger?
 A: Set the *Request Parameter Name*. the default is `req`
 
+Q: What data types are supported for input bindings?
+A: binary, stream, string
 
 Blob trigger - executes a function when a file is uploaded or updated in blob storage  
 

@@ -70,6 +70,9 @@ VMs deployed within an availablity set of at least two machines are guaranteed 9
 *Fault Domain* - logical group of components that share a single point of failure, such as a server rack in a AZ datacenter  
 *Update Domain* - logical group of hardware that is updated/ rebooted simultaneously  
 
+*Autoscaling*
+- available in Standard plan and higher
+Cool Down Period - After a scale up/scale down event has been triggered, the amount of time to allocate/deallocate machines  
 Scale Up/Down - increasing/decreasing the CPU/RAM size of the VM(s)  
 Scale Out/In - increase/decrease the number of VMs  
 
@@ -120,6 +123,24 @@ The plan settings define the vm:
 - SLA
 - Automatic backup/restore
 
+When an app is created it is put into an App Service Plan and then run on all vms in the ASP. if multiple apps are in the APS they share the same vms. All deployment slots in the APS also share the vms.
+
+
+*Pricing Tiers*  
+- Shared Compute: Free and Shared plans
+    - apps run on the same vms as other customers apps. Cannot scale out.
+    - dynamic ip addresses
+- Dedicated Compute - Basic , Standard, Premium/V2 plans
+    - apps run on dedicated vms
+    - supports scaling out
+    - app in the same Service Plan share same vms
+    - dynamic ip addresses
+- Isolated - App Service Environments 
+    - dedicated VMs
+    - dedicated Vnets
+    - static ip addresses
+
+Apps that are not in Isolated tier share network infractructure with other apps. All ASPs and apps that are not in the isolated tier share the same set of IP addresses. These IP addresses are part of Azure's infracturcture. In the Isolated tier ip addresses are assigned to the ASP itself.  
 
 *Services will be interrupted when scaling Up/Down*  
 
@@ -147,22 +168,23 @@ Host names are swapped.
 Automatically swap slots for CI/CD. Not available in App Service on Linux  
 
 
+### App Service Environments
+ASE is used for high-volume applications that will need to be able to horizontally scale in large amounts. These apps also typically have high memory usage and RPS( Requests Per Second).  
+
+*Workers* - VM that hosts the customer's app  
+*Front End* - Handle http/s requests and load balance to workers.  
+Both Front Ends and Workers are added automatically by azure as the service scales in/out.  
+
+- Workers are available in three sizes:
+    - 2 cpu/ 4gb ram
+    - 4 cpu/ 16gb ram
+    - 8 cpu/ 32gb ram
+- All instances exist within the customer's Vnet, allowing fine-grained network control.
+- static, dedicated ip addresses for inbound and outbound connections
+- Supports connecting to on-site resources over VPN
+- up to 100 instances
 
 
-### Deploy a web app to App Service with Azure CLI  
-Get resource names  
-```
-APPNAME=$(az webapp list --query [0].name --output tsv)
-APPRG=$(az webapp list --query [0].resourceGroup --output tsv)
-APPPLAN=$(az appservice plan list --query [0].name --output tsv)
-APPSKU=$(az appservice plan list --query [0].sku.name --output tsv)
-APPLOCATION=$(az appservice plan list --query [0].location --output tsv)
-```
-
-Deploy:  
-```
-az webapp up --name $APPNAME --resource-group $APPRG --plan $APPPLAN --sku $APPSKU --location "$APPLOCATION"
-```
 
 # Azure Container Registry
 Used to store Docker images on Azure
@@ -199,3 +221,17 @@ Benefits of kubernetes:
     - values used in deployment phase
 - Outputs
     - values returned from deployed resources
+
+# Application Gateway
+Application Gateway is a traffic load balancer.  
+- When used with Azure Kubernetes it runs in a pod and balances traffic to other pods
+- Url based routing. Requests for `/foo` can  be routed to the Foo server, requests for `/bar` are routed to the Bar server.
+- Multiple-site hosting. Multiple domain names are supported on a single instance. Both domain names will point to the same IP address but the AG routes requests internally to the appropriate service.
+    - subdomains can also be hosted on the same AG deployment.
+- Redirection
+    - Http/ https 
+    - external sites
+    - change port
+    - change path
+- session affinity - cookie based sessions are always routed back to the same server
+- Can rewrite http headers and urls to hide sensitive internal network information
